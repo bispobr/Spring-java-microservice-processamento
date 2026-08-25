@@ -1,40 +1,109 @@
-# Microserviço de Cadastro de pedidos - Java Spring
-Este repositório contém a segunda parte de um projeto de microserviços desenvolvido com **Java Spring**, com foco, na prática de comunicação assíncrona entre serviços. 
+# Processing Service
 
-## Descrição
+Microsserviço responsável pelo processamento assíncrono de pedidos recebidos através do RabbitMQ.
 
-A api recebe os dados vindo de uma fila de mensagens (RabbitMQ) e os salva em um banco de dados.
+Este serviço faz parte de um conjunto de microsserviços desenvolvido com Java e Spring Boot.
 
-## Tecnologias  Utilizadas
+## Arquitetura
 
-- **Java + Spring Boot** – Framework principal da aplicação.
-- **RabbitMQ** com **CloudAMQP** – Comunicação assíncrona entre serviços.
-- **PostgreSQL** – Persistência dos dados.
-- **Lombok** – Uso da anotação `@Slf4j` para geração de logs.
-- **Spring Boot Actuator** – Monitoramento da aplicação.
+Fluxo simplificado:
+
+```text
+Order Service
+      │
+      ▼
+  RabbitMQ
+      │
+      ▼
+Processing Service
+      │
+      ▼
+ PostgreSQL
+```
+
+O serviço consome mensagens disponibilizadas pelo Order Service e persiste os dados recebidos.
+
+## Responsabilidades
+
+- Consumir mensagens do RabbitMQ
+- Processar dados de pedidos
+- Persistir os dados processados
+- Disponibilizar informações de saúde e métricas da aplicação
+
+## Tecnologias
+
+- Java 21
+- Spring Boot
+- Spring AMQP
+- RabbitMQ / CloudAMQP
+- PostgreSQL
+- Spring Data JPA
+- Spring Boot Actuator
+- JUnit 5
+- Mockito
 
 ## Requisitos
 
 - Java 21
 - Maven
 - PostgreSQL
+- RabbitMQ ou CloudAMQP
 
-## Executando o Projeto
+## Configuração
 
-1. Clone o repositório 1:
+As configurações de banco de dados e RabbitMQ podem ser fornecidas por variáveis de ambiente.
+
+Exemplo:
+
+```properties
+DB_URL=jdbc:postgresql://localhost:5432/microservice-processamento
+DB_USERNAME=postgres
+DB_PASSWORD=senha
+RABBITMQ_ADDRESSES=amqps://...
+RABBITMQ_PROCESSING_QUEUE=...
+```
+
+Os valores devem ser configurados de acordo com o ambiente utilizado.
+
+## Executando
+
+Clone o repositório:
 
 ```bash
-git  https://github.com/bispobr/Spring-java-microservice-processamento.git
+git clone https://github.com/bispobr/Spring-java-microservice-processamento.git
+cd Spring-java-microservice-processamento
 ```
-2. Clone o repositório 2:
+
+Execute:
 
 ```bash
-git https://github.com/bispobr/Spring-java-microservice-pedido.git
+./mvnw spring-boot:run
 ```
 
-3. Altere o arquivo de configuração **application.properties** com as credenciais de login do PostgreSQL e endereços Rabbitmq do seu ambiente.
-## Como usar
+A aplicação utiliza a porta `8082`.
 
-1. Inicie a aplicação 
-2. API está acessivel atraves do endereço http://localhost:8082
-3. O endpoint de saúde e métricas do Actuator está acessível através do Link http://localhost:8082/actuator
+## Actuator
+
+O Spring Boot Actuator disponibiliza informações de saúde e métricas da aplicação.
+
+Endpoint:
+
+```text
+http://localhost:8082/actuator
+```
+
+## Testes
+
+```bash
+./mvnw test
+```
+
+## Serviços relacionados
+
+- [Order Service](https://github.com/bispobr/Spring-java-microservice-pedido)
+- [User Service](https://github.com/bispobr/Spring-java-microservice-usuario)
+- [Email Service](https://github.com/bispobr/Spring-java-microservice-email)
+
+## Status
+
+Projeto de estudo desenvolvido para praticar comunicação assíncrona, mensageria e processamento de dados utilizando Java e Spring Boot.
