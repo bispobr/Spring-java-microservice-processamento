@@ -21,14 +21,14 @@ Processing Service
  PostgreSQL
 ```
 
-O serviço consome mensagens disponibilizadas pelo Order Service e persiste os dados recebidos.
+O serviço consome as mensagens disponibilizadas pelo Order Service, processa os dados recebidos e realiza a persistência.
 
 ## Responsabilidades
 
 - Consumir mensagens do RabbitMQ
-- Processar dados de pedidos
+- Processar informações de pedidos
 - Persistir os dados processados
-- Disponibilizar informações de saúde e métricas da aplicação
+- Disponibilizar informações de saúde da aplicação
 
 ## Tecnologias
 
@@ -51,7 +51,7 @@ O serviço consome mensagens disponibilizadas pelo Order Service e persiste os d
 
 ## Configuração
 
-As configurações de banco de dados e RabbitMQ podem ser fornecidas por variáveis de ambiente.
+As configurações de banco de dados e mensageria podem ser fornecidas por variáveis de ambiente.
 
 Exemplo:
 
@@ -63,7 +63,7 @@ RABBITMQ_ADDRESSES=amqps://...
 RABBITMQ_PROCESSING_QUEUE=...
 ```
 
-Os valores devem ser configurados de acordo com o ambiente utilizado.
+Os valores devem ser ajustados de acordo com o ambiente utilizado.
 
 ## Executando
 
@@ -74,9 +74,10 @@ git clone https://github.com/bispobr/Spring-java-microservice-processamento.git
 cd Spring-java-microservice-processamento
 ```
 
-Execute:
+Compile e execute:
 
 ```bash
+./mvnw clean package
 ./mvnw spring-boot:run
 ```
 
@@ -84,15 +85,17 @@ A aplicação utiliza a porta `8082`.
 
 ## Actuator
 
-O Spring Boot Actuator disponibiliza informações de saúde e métricas da aplicação.
+O serviço utiliza Spring Boot Actuator para disponibilizar informações de saúde e métricas da aplicação.
 
-Endpoint:
+Endpoint de saúde:
 
 ```text
-http://localhost:8082/actuator
+http://localhost:8082/actuator/health
 ```
 
 ## Testes
+
+Execute:
 
 ```bash
 ./mvnw test
@@ -106,4 +109,4 @@ http://localhost:8082/actuator
 
 ## Status
 
-Projeto de estudo desenvolvido para praticar comunicação assíncrona, mensageria e processamento de dados utilizando Java e Spring Boot.
+Projeto de estudo desenvolvido para praticar processamento assíncrono, mensageria com RabbitMQ, persistência com PostgreSQL e desenvolvimento backend utilizando Java e Spring Boot.
