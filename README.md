@@ -1,71 +1,72 @@
-# Processing Service
+# Spring Java Microservice - Processamento
 
-Microsserviço responsável pelo processamento assíncrono de pedidos recebidos através do RabbitMQ.
+Microsserviço responsável pelo processamento assíncrono dos pedidos recebidos através do RabbitMQ.
 
-Este serviço faz parte de um conjunto de microsserviços desenvolvido com Java e Spring Boot.
+O serviço faz parte de uma arquitetura de microsserviços desenvolvida com Java e Spring Boot.
 
-## Arquitetura
+## 🏗️ Arquitetura
 
 Fluxo simplificado:
 
 ```text
 Order Service
-      │
-      ▼
-  RabbitMQ
-      │
-      ▼
+     │
+     ▼
+ RabbitMQ
+     │
+     ▼
 Processing Service
-      │
-      ▼
+     │
+     ▼
  PostgreSQL
 ```
 
-O serviço consome as mensagens disponibilizadas pelo Order Service, processa os dados recebidos e realiza a persistência.
+O serviço consome as mensagens publicadas pelo `Order Service`, processa os pedidos e persiste as informações necessárias no PostgreSQL.
 
 ## Responsabilidades
 
-- Consumir mensagens do RabbitMQ
-- Processar informações de pedidos
-- Persistir os dados processados
-- Disponibilizar informações de saúde da aplicação
+* Consumir mensagens de pedidos do RabbitMQ
+* Processar os pedidos recebidos
+* Persistir os dados processados
+* Disponibilizar informações de saúde da aplicação
+* Permitir acompanhamento das métricas da aplicação
 
-## Tecnologias
+## 🛠️ Tecnologias
 
-- Java 21
-- Spring Boot
-- Spring AMQP
-- RabbitMQ / CloudAMQP
-- PostgreSQL
-- Spring Data JPA
-- Spring Boot Actuator
-- JUnit 5
-- Mockito
+* Java 21
+* Spring Boot
+* Spring Web
+* Spring Data JPA
+* Spring AMQP
+* RabbitMQ / CloudAMQP
+* PostgreSQL
+* H2
+* Springdoc OpenAPI
+* Spring Boot Actuator
+* JUnit 5
+* Mockito
 
-## Requisitos
+## 📋 Requisitos
 
-- Java 21
-- Maven
-- PostgreSQL
-- RabbitMQ ou CloudAMQP
+* Java 21
+* Maven
+* PostgreSQL
+* RabbitMQ ou CloudAMQP
 
-## Configuração
+## ⚙️ Configuração
 
 As configurações de banco de dados e mensageria podem ser fornecidas por variáveis de ambiente.
 
-Exemplo:
+| Variável                    | Descrição                           | Exemplo                                                       |
+| --------------------------- | ----------------------------------- | ------------------------------------------------------------- |
+| `DB_URL`                    | URL de conexão com o PostgreSQL     | `jdbc:postgresql://localhost:5432/microservice-processamento` |
+| `DB_USERNAME`               | Usuário do PostgreSQL               | `postgres`                                                    |
+| `DB_PASSWORD`               | Senha do PostgreSQL                 | `senha`                                                       |
+| `JPA_DDL_AUTO`              | Estratégia de atualização do schema | `update`                                                      |
+| `RABBITMQ_ADDRESSES`        | Endereço do RabbitMQ ou CloudAMQP   | `amqps://...`                                                 |
+| `RABBITMQ_PROCESSING_QUEUE` | Nome da fila consumida pelo serviço | `...`                                                         |
 
-```properties
-DB_URL=jdbc:postgresql://localhost:5432/microservice-processamento
-DB_USERNAME=postgres
-DB_PASSWORD=senha
-RABBITMQ_ADDRESSES=amqps://...
-RABBITMQ_PROCESSING_QUEUE=...
-```
-
-Os valores devem ser ajustados de acordo com o ambiente utilizado.
-
-## Executando
+## ▶️ Executando
 
 Clone o repositório:
 
@@ -83,9 +84,15 @@ Compile e execute:
 
 A aplicação utiliza a porta `8082`.
 
-## Actuator
+## 📚 API
 
-O serviço utiliza Spring Boot Actuator para disponibilizar informações de saúde e métricas da aplicação.
+A aplicação disponibiliza documentação através do Swagger/OpenAPI.
+
+```text
+http://localhost:8082/swagger-ui/index.html
+```
+
+## ❤️ Actuator
 
 Endpoint de saúde:
 
@@ -93,20 +100,22 @@ Endpoint de saúde:
 http://localhost:8082/actuator/health
 ```
 
-## Testes
+O Actuator também disponibiliza métricas da aplicação.
 
-Execute:
+## 🧪 Testes
+
+Execute os testes com:
 
 ```bash
 ./mvnw test
 ```
 
-## Serviços relacionados
+## 🔗 Serviços relacionados
 
-- [Order Service](https://github.com/bispobr/Spring-java-microservice-pedido)
-- [User Service](https://github.com/bispobr/Spring-java-microservice-usuario)
-- [Email Service](https://github.com/bispobr/Spring-java-microservice-email)
+* [Order Service](https://github.com/bispobr/Spring-java-microservice-pedido)
+* [User Service](https://github.com/bispobr/Spring-java-microservice-usuario)
+* [Email Service](https://github.com/bispobr/Spring-java-microservice-email)
 
-## Status
+## 📌 Status
 
-Projeto de estudo desenvolvido para praticar processamento assíncrono, mensageria com RabbitMQ, persistência com PostgreSQL e desenvolvimento backend utilizando Java e Spring Boot.
+Projeto de estudo desenvolvido para praticar processamento assíncrono, mensageria com RabbitMQ, persistência de dados e comunicação entre microsserviços utilizando Spring Boot.
