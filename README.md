@@ -113,8 +113,6 @@ Execute os testes com:
 ## 🔗 Serviços relacionados
 
 * [Order Service](https://github.com/bispobr/Spring-java-microservice-pedido)
-* [User Service](https://github.com/bispobr/Spring-java-microservice-usuario)
-* [Email Service](https://github.com/bispobr/Spring-java-microservice-email)
 
 ## 📌 Status
 
